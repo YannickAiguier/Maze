@@ -1,4 +1,8 @@
-import * as papaparse from './papaparse.min.js';
+// pour lire un fichier
+import { readFileSync } from 'fs';
+
+// pour utiliser papaparse (parse fichier csv)
+import Papa from './node_modules/papaparse/papaparse.js';
 
 // les variables du labyrinthe : largeur, hauteur, tableau représentant le labyrinthe, coordonnées de la sortie
 let mazex = 7;
@@ -23,6 +27,16 @@ let toVisit = new Array();
 
 // le nombre détapes pour trouver la sortie
 let step = 0;
+
+// test lecture fichier
+let mazeMap = readFileSync('maze.csv', 'utf8');
+Papa.parse(mazeMap, {
+    delimiter: ",",
+    complete: function(results) {
+        show(results);
+    }
+});
+
 
 // début du programme : création du labyrinthe, départ de la case [y, x], on l'ajoute à visited
 createMaze();
@@ -49,6 +63,11 @@ step++;
 console.log("Trouvé G en " + foundY + ", " + foundX);
 console.log(visited);
 console.log("Nombre d'étapes pour trouver la sortie :" + step);
+
+function show(results) {
+    console.log(results["data"]);
+    console.log(results["data"][0][1])
+}
 
 //
 // Fin du programme principal
