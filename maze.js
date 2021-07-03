@@ -6,10 +6,14 @@ let exitY = 2;
 let exitX = 4;
 
 // les variables du programme
+// la position du personnage
 let x = 0;
 let y = 0;
+
 let gx = -1;
 let gy = -1;
+
+// les tableaux des cases visitées et à visiter
 let visited = new Array();
 let toVisit = new Array();
 
@@ -47,11 +51,12 @@ while (maze[y][x] != 'G') {
         visited.push(toVisit[toVisit.length - 1]);
         toVisit.pop();
     } else {
+        visited.push([gy, gx]);
         moveTo(gy, gx);
     }
     console.log(visited);
 }
-console.log("Trouvé G en " + gx + ", " + gy);
+console.log("Trouvé G en " + gy + ", " + gx);
 
 /**
  * fonction qui assigne les nouvelles coordonnées
