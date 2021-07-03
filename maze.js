@@ -24,7 +24,7 @@ visited.push([y, x]);
 while (maze[y][x] != 'G') {
     let yy = y - 1;
     if (boxInMaze(yy, x)) {
-        if (maze[yy][x] == 'G') {
+        if (boxIsG(yy, x)) {
             gx = x;
             gy = yy;
         } else if (maze[yy][x] != 'M' && hasNotBeenVisited(yy, x)) {
@@ -35,7 +35,7 @@ while (maze[y][x] != 'G') {
     }
     let xx = x + 1;
     if (boxInMaze(y, xx)) {
-        if (maze[y][xx] == 'G') {
+        if (boxIsG(y, xx)) {
             gx = xx;
             gy = y;
         } else if (maze[y][xx] != 'M' && hasNotBeenVisited(y, xx)) {
@@ -46,7 +46,7 @@ while (maze[y][x] != 'G') {
     }
     yy = y + 1;
     if (boxInMaze(yy, x)) {
-        if (maze[yy][x] == 'G') {
+        if (boxIsG(yy, x)) {
             gx = x;
             gy = yy;
         } else if (maze[yy][x] != 'M' && hasNotBeenVisited(yy, x)) {
@@ -57,7 +57,7 @@ while (maze[y][x] != 'G') {
     }
     xx = x - 1;
     if (boxInMaze(y, xx)) {
-        if (maze[y][xx] == 'G') {
+        if (boxIsG(y, xx)) {
             gx = xx;
             gy = y;
         } else if (maze[y][xx] != 'M' && hasNotBeenVisited(y, xx)) {
@@ -101,6 +101,17 @@ function moveTo(newY, newX) {
  */
  function boxInMaze(y, x) {
     return (y >= 0 && y < mazey && x >= 0 && x < mazex);
+}
+
+/**
+ * fontion qui détermine si une case y,x contient la sortie (=='G')
+ * 
+ * @param {int} y 
+ * @param {int} x 
+ * @returns boolean
+ */
+ function boxIsG(y, x) {
+    return maze[y][x] == 'G';
 }
 
 function hasNotBeenVisited(y, x) {
