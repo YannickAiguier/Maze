@@ -22,30 +22,51 @@ createMaze();
 visited.push([y, x]);
 
 while (maze[y][x] != 'G') {
-    for (let xx = x-1; xx < x+2; xx+=2) {
-        if (xx >= 0 && xx < mazex) {
-            if (maze[y][xx] == 'G') {
-                gx = xx;
-                gy = y;
-            } else if (maze[y][xx] != 'M' && hasNotBeenVisited(y, xx)) {
-                toVisit.push([y, xx]);
-                console.log("Add x to visit");
-                console.log(toVisit);
-            }
+    let xx = x - 1;
+    if (xx >= 0 && xx < mazex) {
+        if (maze[y][xx] == 'G') {
+            gx = xx;
+            gy = y;
+        } else if (maze[y][xx] != 'M' && hasNotBeenVisited(y, xx)) {
+            toVisit.push([y, xx]);
+            console.log("Add x to visit");
+            console.log(toVisit);
         }
     }
-    for (let yy = y-1; yy < y+2; yy+=2) {
-        if (yy >= 0 && yy < mazey) {
-            if (maze[yy][x] == 'G') {
-                gx = x;
-                gy = yy;
-            } else if (maze[yy][x] != 'M' && hasNotBeenVisited(yy, x)) {
-                toVisit.push([yy, x]);
-                console.log("Add y to visit");
-                console.log(toVisit);
-            }
+    xx = x + 1;
+    if (xx >= 0 && xx < mazex) {
+        if (maze[y][xx] == 'G') {
+            gx = xx;
+            gy = y;
+        } else if (maze[y][xx] != 'M' && hasNotBeenVisited(y, xx)) {
+            toVisit.push([y, xx]);
+            console.log("Add x to visit");
+            console.log(toVisit);
         }
     }
+    let yy = y - 1;
+    if (yy >= 0 && yy < mazey) {
+        if (maze[yy][x] == 'G') {
+            gx = x;
+            gy = yy;
+        } else if (maze[yy][x] != 'M' && hasNotBeenVisited(yy, x)) {
+            toVisit.push([yy, x]);
+            console.log("Add y to visit");
+            console.log(toVisit);
+        }
+    }
+    yy = y + 1;
+    if (yy >= 0 && yy < mazey) {
+        if (maze[yy][x] == 'G') {
+            gx = x;
+            gy = yy;
+        } else if (maze[yy][x] != 'M' && hasNotBeenVisited(yy, x)) {
+            toVisit.push([yy, x]);
+            console.log("Add y to visit");
+            console.log(toVisit);
+        }
+    }
+    
     if (gx == -1) {
         moveTo(toVisit[toVisit.length - 1][0], toVisit[toVisit.length - 1][1]);
         visited.push(toVisit[toVisit.length - 1]);
