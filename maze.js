@@ -28,18 +28,23 @@ let toVisit = new Array();
 // le nombre détapes pour trouver la sortie
 let step = 0;
 
-// test lecture fichier
+//
+// Début du programme principal
+//
+
+// Commenter/décommenter le mode de création du labyrinthe voulu
+// création depuis le fichier maze.csv
 let mazeMap = readFileSync('maze.csv', 'utf8');
 Papa.parse(mazeMap, {
     delimiter: ",",
     complete: function(results) {
-        show(results);
+        createMazeFromCsv(results);
     }
 });
+// création du labyrinthe initial du sujet du Campus
+//createMaze();
 
-
-// début du programme : création du labyrinthe, départ de la case [y, x], on l'ajoute à visited
-createMaze();
+// début du parcours : départ de la case [y, x], on l'ajoute à visited
 visited.push([y, x]);
 
 while (!foundExit) {
@@ -64,14 +69,27 @@ console.log("Trouvé G en " + foundY + ", " + foundX);
 console.log(visited);
 console.log("Nombre d'étapes pour trouver la sortie :" + step);
 
-function show(results) {
-    console.log(results["data"]);
-    console.log(results["data"][0][1])
-}
-
 //
 // Fin du programme principal
 //
+
+/**
+ * fonction qui crée le tableau maze représentant le labyrinthe à partir du json créé par papaparse
+ * 
+ * @param {json} results 
+ */
+function createMazeFromCsv(results) {
+    let csv = results["data"];
+    mazex = csv[0][0];
+    mazey = csv[0][1];
+    if (csv[0][2] != "") {
+        x = csv[0][2];
+        y = csv[0][3];
+    }
+    for (let i = 0; i < mazey; i++) {
+        maze[i] = csv[i+1];
+    }
+}
 
 /**
  * fonction qui analyse la case y,x
