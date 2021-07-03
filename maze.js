@@ -22,28 +22,6 @@ createMaze();
 visited.push([y, x]);
 
 while (maze[y][x] != 'G') {
-    let xx = x - 1;
-    if (xx >= 0 && xx < mazex) {
-        if (maze[y][xx] == 'G') {
-            gx = xx;
-            gy = y;
-        } else if (maze[y][xx] != 'M' && hasNotBeenVisited(y, xx)) {
-            toVisit.push([y, xx]);
-            console.log("Add x to visit");
-            console.log(toVisit);
-        }
-    }
-    xx = x + 1;
-    if (xx >= 0 && xx < mazex) {
-        if (maze[y][xx] == 'G') {
-            gx = xx;
-            gy = y;
-        } else if (maze[y][xx] != 'M' && hasNotBeenVisited(y, xx)) {
-            toVisit.push([y, xx]);
-            console.log("Add x to visit");
-            console.log(toVisit);
-        }
-    }
     let yy = y - 1;
     if (yy >= 0 && yy < mazey) {
         if (maze[yy][x] == 'G') {
@@ -52,6 +30,17 @@ while (maze[y][x] != 'G') {
         } else if (maze[yy][x] != 'M' && hasNotBeenVisited(yy, x)) {
             toVisit.push([yy, x]);
             console.log("Add y to visit");
+            console.log(toVisit);
+        }
+    }
+    let xx = x + 1;
+    if (xx >= 0 && xx < mazex) {
+        if (maze[y][xx] == 'G') {
+            gx = xx;
+            gy = y;
+        } else if (maze[y][xx] != 'M' && hasNotBeenVisited(y, xx)) {
+            toVisit.push([y, xx]);
+            console.log("Add x to visit");
             console.log(toVisit);
         }
     }
@@ -66,6 +55,19 @@ while (maze[y][x] != 'G') {
             console.log(toVisit);
         }
     }
+    xx = x - 1;
+    if (xx >= 0 && xx < mazex) {
+        if (maze[y][xx] == 'G') {
+            gx = xx;
+            gy = y;
+        } else if (maze[y][xx] != 'M' && hasNotBeenVisited(y, xx)) {
+            toVisit.push([y, xx]);
+            console.log("Add x to visit");
+            console.log(toVisit);
+        }
+    }
+    
+    
     
     if (gx == -1) {
         moveTo(toVisit[toVisit.length - 1][0], toVisit[toVisit.length - 1][1]);
