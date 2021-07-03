@@ -19,11 +19,16 @@ let foundY = -1;
 let visited = new Array();
 let toVisit = new Array();
 
+// le nombre détapes pour trouver la sortie
+let step = 0;
+
 // début du programme : création du labyrinthe, départ de la case [y, x], on l'ajoute à visited
 createMaze();
 visited.push([y, x]);
 
 while (!foundExit) {
+    step++;
+
     analyzeBox(y - 1, x);
     analyzeBox(y, x + 1);
     analyzeBox(y + 1, x);
@@ -38,8 +43,14 @@ while (!foundExit) {
         toVisit.pop();
     }    
 }
+step++;
 console.log("Trouvé G en " + foundY + ", " + foundX);
 console.log(visited);
+console.log("Nombre d'étapes pour trouver la sortie :" + step);
+
+//
+// Fin du programme principal
+//
 
 /**
  * fonction qui analyse la case y,x
