@@ -10,8 +10,10 @@ let exitX = 4;
 let x = 0;
 let y = 0;
 
-let gx = -1;
-let gy = -1;
+// savoir si la case de sortie a été trouvée, et sa position
+let foundExit = false;
+let foundX = -1;
+let foundY = -1;
 
 // les tableaux des cases visitées et à visiter
 let visited = new Array();
@@ -21,23 +23,23 @@ let toVisit = new Array();
 createMaze();
 visited.push([y, x]);
 
-while (maze[y][x] != 'G') {
+while (!foundExit) {
     analyzeBox(y - 1, x);
     analyzeBox(y, x + 1);
     analyzeBox(y + 1, x);
     analyzeBox(y, x - 1);
     
-    if (gx == -1) {
+    if (foundExit) {
+        visited.push([foundY, foundX]);
+        moveTo([foundY, foundX]);
+    } else {
         moveTo(lastInToVisit());
         visited.push(lastInToVisit());
         toVisit.pop();
-    } else {
-        visited.push([gy, gx]);
-        moveTo([gy, gx]);
     }
     console.log(visited);
 }
-console.log("Trouvé G en " + gy + ", " + gx);
+console.log("Trouvé G en " + foundY + ", " + foundX);
 
 /**
  * fonction qui analyse la case y,x
@@ -51,8 +53,9 @@ console.log("Trouvé G en " + gy + ", " + gx);
 function analyzeBox(y, x) {
     if (boxInMaze(y, x)) {
         if (boxIsG(y, x)) {
-            gx = x;
-            gy = y;
+            foundExit = true;
+            foundX = x;
+            foundY = y;
         } else if (boxIsNotWall(y, x) && hasNotBeenVisited(y, x)) {
             toVisit.push([y, x]);
             console.log("Add y to visit");
