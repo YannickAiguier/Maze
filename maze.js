@@ -23,16 +23,7 @@ visited.push([y, x]);
 
 while (maze[y][x] != 'G') {
     let yy = y - 1;
-    if (boxInMaze(yy, x)) {
-        if (boxIsG(yy, x)) {
-            gx = x;
-            gy = yy;
-        } else if (boxIsNotWall(yy, x) && hasNotBeenVisited(yy, x)) {
-            toVisit.push([yy, x]);
-            console.log("Add y to visit");
-            console.log(toVisit);
-        }
-    }
+    analyzeBox(yy, x);
     let xx = x + 1;
     if (boxInMaze(y, xx)) {
         if (boxIsG(y, xx)) {
@@ -80,6 +71,28 @@ while (maze[y][x] != 'G') {
     console.log(visited);
 }
 console.log("Trouvé G en " + gy + ", " + gx);
+
+/**
+ * fonction qui analyse la case y,x
+ * Si les coordonnées y,x sont à l'intérieur du labyrinthe alors la case est-elle la sortie ?
+ * Si oui on le sait et on enregistre ses coordonnées,
+ * Si non on l'ajoute à la liste des cases à visiter seulement si ce n'est pas un mur et qu'elle n'a pas déjà été visitée
+ * 
+ * @param {int} y 
+ * @param {int} x 
+ */
+function analyzeBox(y, x) {
+    if (boxInMaze(y, x)) {
+        if (boxIsG(y, x)) {
+            gx = x;
+            gy = y;
+        } else if (boxIsNotWall(y, x) && hasNotBeenVisited(y, x)) {
+            toVisit.push([y, x]);
+            console.log("Add y to visit");
+            console.log(toVisit);
+        }
+    }
+}
 
 /**
  * fonction qui assigne les nouvelles coordonnées
