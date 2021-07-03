@@ -23,7 +23,7 @@ visited.push([y, x]);
 
 while (maze[y][x] != 'G') {
     let yy = y - 1;
-    if (yy >= 0 && yy < mazey) {
+    if (boxInMaze(yy, x)) {
         if (maze[yy][x] == 'G') {
             gx = x;
             gy = yy;
@@ -34,7 +34,7 @@ while (maze[y][x] != 'G') {
         }
     }
     let xx = x + 1;
-    if (xx >= 0 && xx < mazex) {
+    if (boxInMaze(y, xx)) {
         if (maze[y][xx] == 'G') {
             gx = xx;
             gy = y;
@@ -45,7 +45,7 @@ while (maze[y][x] != 'G') {
         }
     }
     yy = y + 1;
-    if (yy >= 0 && yy < mazey) {
+    if (boxInMaze(yy, x)) {
         if (maze[yy][x] == 'G') {
             gx = x;
             gy = yy;
@@ -56,7 +56,7 @@ while (maze[y][x] != 'G') {
         }
     }
     xx = x - 1;
-    if (xx >= 0 && xx < mazex) {
+    if (boxInMaze(y, xx)) {
         if (maze[y][xx] == 'G') {
             gx = xx;
             gy = y;
@@ -90,6 +90,17 @@ console.log("Trouvé G en " + gy + ", " + gx);
 function moveTo(newY, newX) {
     x = newX;
     y = newY;
+}
+
+/**
+ * fonction qui détermine si les coordonnées y,x sont à l'intérieur du labyrinthe
+ * 
+ * @param {int} y 
+ * @param {int} x 
+ * @returns boolean
+ */
+ function boxInMaze(y, x) {
+    return (y >= 0 && y < mazey && x >= 0 && x < mazex);
 }
 
 function hasNotBeenVisited(y, x) {
