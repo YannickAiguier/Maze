@@ -1,24 +1,9 @@
-// création du labyrinthe
+// les variables du labyrinthe : largeur, hauteur, tableau représentant le labyrinthe, coordonnées de la sortie
 let mazex = 7;
 let mazey = 6;
-let maze = new Array(mazey);
-for (let i = 0; i < mazey; i++) {
-    maze[i] = new Array(mazex);
-}
-maze[0][1] = 'M';
-maze[1][1] = 'M';
-maze[2][1] = 'M';
-maze[4][1] = 'M';
-maze[5][1] = 'M';
-maze[1][3] = 'M';
-maze[2][3] = 'M';
-maze[4][3] = 'M';
-maze[1][4] = 'M';
-maze[3][4] = 'M';
-maze[3][5] = 'M';
-maze[5][5] = 'M';
-maze[1][6] = 'M';
-maze[2][4] = 'G';
+let maze = new Array();
+let exitY = 2;
+let exitX = 4;
 
 // les variables du programme
 let x = 0;
@@ -27,9 +12,10 @@ let gx = -1;
 let gy = -1;
 let visited = new Array();
 let toVisit = new Array();
+
+// début du programme : création du labyrinthe, départ de la case [y, x], on l'ajoute à visited
+createMaze();
 visited.push([y, x]);
-console.log(visited);
-console.log(toVisit);
 
 while (maze[y][x] != 'G') {
     for (let xx = x-1; xx < x+2; xx+=2) {
@@ -85,4 +71,32 @@ function hasNotBeenVisited(y, x) {
         }
     }
     return true;
+}
+
+/**
+ * fonction qui crée la labyrinthe
+ */
+ function createMaze() {
+    maze = new Array(mazey);
+
+    // construction du tableau labyrinthe
+    for (let i = 0; i < mazey; i++) {
+        maze[i] = new Array(mazex);
+    }
+
+    // positionnement des murs et de la sortie
+    maze[0][1] = 'M';
+    maze[1][1] = 'M';
+    maze[2][1] = 'M';
+    maze[4][1] = 'M';
+    maze[5][1] = 'M';
+    maze[1][3] = 'M';
+    maze[2][3] = 'M';
+    maze[4][3] = 'M';
+    maze[1][4] = 'M';
+    maze[3][4] = 'M';
+    maze[3][5] = 'M';
+    maze[5][5] = 'M';
+    maze[1][6] = 'M';
+    maze[exitY][exitX] = 'G';
 }
