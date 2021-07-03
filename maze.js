@@ -1,3 +1,5 @@
+import * as papaparse from './papaparse.min.js';
+
 // les variables du labyrinthe : largeur, hauteur, tableau représentant le labyrinthe, coordonnées de la sortie
 let mazex = 7;
 let mazey = 6;
