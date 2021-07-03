@@ -27,7 +27,7 @@ while (maze[y][x] != 'G') {
         if (boxIsG(yy, x)) {
             gx = x;
             gy = yy;
-        } else if (maze[yy][x] != 'M' && hasNotBeenVisited(yy, x)) {
+        } else if (boxIsNotWall(yy, x) && hasNotBeenVisited(yy, x)) {
             toVisit.push([yy, x]);
             console.log("Add y to visit");
             console.log(toVisit);
@@ -38,7 +38,7 @@ while (maze[y][x] != 'G') {
         if (boxIsG(y, xx)) {
             gx = xx;
             gy = y;
-        } else if (maze[y][xx] != 'M' && hasNotBeenVisited(y, xx)) {
+        } else if (boxIsNotWall(y, xx) && hasNotBeenVisited(y, xx)) {
             toVisit.push([y, xx]);
             console.log("Add x to visit");
             console.log(toVisit);
@@ -49,7 +49,7 @@ while (maze[y][x] != 'G') {
         if (boxIsG(yy, x)) {
             gx = x;
             gy = yy;
-        } else if (maze[yy][x] != 'M' && hasNotBeenVisited(yy, x)) {
+        } else if (boxIsNotWall(yy, x) && hasNotBeenVisited(yy, x)) {
             toVisit.push([yy, x]);
             console.log("Add y to visit");
             console.log(toVisit);
@@ -60,7 +60,7 @@ while (maze[y][x] != 'G') {
         if (boxIsG(y, xx)) {
             gx = xx;
             gy = y;
-        } else if (maze[y][xx] != 'M' && hasNotBeenVisited(y, xx)) {
+        } else if (boxIsNotWall(y, xx) && hasNotBeenVisited(y, xx)) {
             toVisit.push([y, xx]);
             console.log("Add x to visit");
             console.log(toVisit);
@@ -112,6 +112,17 @@ function moveTo(newY, newX) {
  */
  function boxIsG(y, x) {
     return maze[y][x] == 'G';
+}
+
+/**
+ * fonction qui détermine si la case n'est pas un mur (!='M')
+ * 
+ * @param {int} y 
+ * @param {int} x 
+ * @returns boolean
+ */
+ function boxIsNotWall(y, x) {
+    return maze[y][x] != 'M';
 }
 
 function hasNotBeenVisited(y, x) {
