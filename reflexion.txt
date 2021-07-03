@@ -1,0 +1,4 @@
+Pour chaque case, je me déplace sur les cases adjacentes possibles,
+jusqu'à trouver la sortie ou arriver à une case qui n'a plus aucune case adjacente où je peux aller ou où je ne soit déjà allé.
+Je reviens alors en arrière jusqu'à trouver une case qui a encore au moins une case adjacente que je n'ai pas visitée et je recommence.
+Lorsque je visite les cases adjacente je le fais toujours dans le même ordre (droite, devant, gauche par exemple).
