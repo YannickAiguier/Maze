@@ -36,10 +36,10 @@ while (!foundExit) {
         moveTo(lastInToVisit());
         visited.push(lastInToVisit());
         toVisit.pop();
-    }
-    console.log(visited);
+    }    
 }
 console.log("Trouvé G en " + foundY + ", " + foundX);
+console.log(visited);
 
 /**
  * fonction qui analyse la case y,x
@@ -58,8 +58,6 @@ function analyzeBox(y, x) {
             foundY = y;
         } else if (boxIsNotWall(y, x) && hasNotBeenVisited(y, x)) {
             toVisit.push([y, x]);
-            console.log("Add y to visit");
-            console.log(toVisit);
         }
     }
 }
@@ -108,6 +106,13 @@ function moveTo([newY, newX]) {
     return maze[y][x] != 'M';
 }
 
+/**
+ * fonction qui détermine si la case y,x n'a pas été visitée (n'est pas dasn le tableau visited)
+ * 
+ * @param {int} y 
+ * @param {int} x 
+ * @returns boolean
+ */
 function hasNotBeenVisited(y, x) {
     for(let i = 0; i < visited.length; i++) {
         if (visited[i][0] == y && visited[i][1] == x) {
