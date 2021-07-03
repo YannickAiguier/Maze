@@ -1,0 +1,49 @@
+Hypothèse : le tableau représentant le labyrinthe exist déjà comme défini dans le sujet, il s'appelle maze,
+sa largeur est dans la variable mazex et sa hauteur dans mazey
+la case d'arrivée contient le caractère 'G' et les murs sont représentés par la lettre 'M'
+
+Les variables x et y représentent la position du joueur dans le labyrinthe
+
+variable x : entier
+variable y : entier
+variable xx : entier
+variable yy : entier
+variable gx : entier
+variable gy : entier
+liste visited : coordonnées
+liste toVisit : coordonnées
+x <- 0;
+y <- 0;
+gx <- -1;
+gy <- -1;
+Tantque (maze[x, y] != 'G') faire
+    Pour (xx de x-1 à x+1 pas de 2) faire
+        Si (xx >= 0 ET xx <= mazex) alors
+             Si (maze(xx, y) = 'G') alors
+                gx <- xx,
+                gy <- y
+            SinonSi (maze(xx, y) != 'M' ET maze(xx, y) NOT IN visited) alors
+                toVisitAdd(xx, y)
+            FinSi
+        FinSi
+    FinPour
+    Pour (yy de y-1 à y+1 pas de 2) faire
+       Si (yy >= 0 ET yy <= mazey) alors
+             Si (maze(x, yy) = 'G') alors
+                gx <- x,
+                gy <- yy
+            SinonSi (maze(x, yy) != 'M' ET maze(x, yy) NOT IN visited) alors
+                toVisitAdd(x, yy)
+            FinSi
+        FinSi
+    FinPour
+    Si (gx = -1) alors
+        moveTo(toVisit.lastElement)
+        visitedAdd(toVisit.lastElement)
+        toVisitRemove(lastElement)
+    Sinon
+        visitedAdd(gx, gy)
+        moveTo(gx, gy)
+    FinSi
+FinTantque
+Afficher("Trouvé G en " + gx + ", " + gy);
