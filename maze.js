@@ -22,51 +22,18 @@ createMaze();
 visited.push([y, x]);
 
 while (maze[y][x] != 'G') {
-    let yy = y - 1;
-    analyzeBox(yy, x);
-    let xx = x + 1;
-    if (boxInMaze(y, xx)) {
-        if (boxIsG(y, xx)) {
-            gx = xx;
-            gy = y;
-        } else if (boxIsNotWall(y, xx) && hasNotBeenVisited(y, xx)) {
-            toVisit.push([y, xx]);
-            console.log("Add x to visit");
-            console.log(toVisit);
-        }
-    }
-    yy = y + 1;
-    if (boxInMaze(yy, x)) {
-        if (boxIsG(yy, x)) {
-            gx = x;
-            gy = yy;
-        } else if (boxIsNotWall(yy, x) && hasNotBeenVisited(yy, x)) {
-            toVisit.push([yy, x]);
-            console.log("Add y to visit");
-            console.log(toVisit);
-        }
-    }
-    xx = x - 1;
-    if (boxInMaze(y, xx)) {
-        if (boxIsG(y, xx)) {
-            gx = xx;
-            gy = y;
-        } else if (boxIsNotWall(y, xx) && hasNotBeenVisited(y, xx)) {
-            toVisit.push([y, xx]);
-            console.log("Add x to visit");
-            console.log(toVisit);
-        }
-    }
-    
-    
+    analyzeBox(y - 1, x);
+    analyzeBox(y, x + 1);
+    analyzeBox(y + 1, x);
+    analyzeBox(y, x - 1);
     
     if (gx == -1) {
-        moveTo(toVisit[toVisit.length - 1][0], toVisit[toVisit.length - 1][1]);
-        visited.push(toVisit[toVisit.length - 1]);
+        moveTo(lastInToVisit());
+        visited.push(lastInToVisit());
         toVisit.pop();
     } else {
         visited.push([gy, gx]);
-        moveTo(gy, gx);
+        moveTo([gy, gx]);
     }
     console.log(visited);
 }
@@ -100,7 +67,7 @@ function analyzeBox(y, x) {
  * @param {int} newX 
  * @param {int} newY 
  */
-function moveTo(newY, newX) {
+function moveTo([newY, newX]) {
     x = newX;
     y = newY;
 }
@@ -145,6 +112,15 @@ function hasNotBeenVisited(y, x) {
         }
     }
     return true;
+}
+
+/**
+ * fonction qui renvoie les coordonnées de la dernière case de la liste des cases à visiter
+ * 
+ * @returns array[y, x]
+ */
+ function lastInToVisit() {
+    return toVisit[toVisit.length - 1];
 }
 
 /**
