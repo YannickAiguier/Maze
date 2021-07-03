@@ -1,0 +1,23 @@
+{
+  "name": "maze",
+  "version": "1.0.0",
+  "description": "",
+  "main": "maze.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YannickAiguier/Maze.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/YannickAiguier/Maze/issues"
+  },
+  "homepage": "https://github.com/YannickAiguier/Maze#readme",
+  "dependencies": {
+    "papaparse": "^5.3.1"
+  }
+}
