@@ -48,26 +48,8 @@ Papa.parse(mazeMap, {
 // début du parcours : départ de la case [y, x], on l'ajoute à visited
 visited.push([y, x]);
 
-while (!foundExit) {
-    step++;
-    maze[y][x] = step;
-
-    analyzeBox(y - 1, x);
-    analyzeBox(y, x + 1);
-    analyzeBox(y + 1, x);
-    analyzeBox(y, x - 1);
-
-    if (foundExit) {
-        visited.push([foundY, foundX]);
-        //moveTo([foundY, foundX]);
-
-    } else {
-        moveTo(lastInToVisit());
-        visited.push(lastInToVisit());
-        toVisit.pop();
-    }
-    table(maze);
-}
+// mode récursif
+recursiveMove();
 step++;
 console.log("Trouvé G en " + foundY + ", " + foundX);
 showPath();
@@ -222,4 +204,24 @@ function showPath() {
         str += ((i+1) + "(" + visited[i] +"), ");
     }
     console.log(str);
+}
+
+function recursiveMove() {
+    step++;
+    maze[y][x] = step;
+
+    analyzeBox(y - 1, x);
+    analyzeBox(y, x + 1);
+    analyzeBox(y + 1, x);
+    analyzeBox(y, x - 1);
+    if (foundExit) {
+        table(maze);
+        visited.push([foundY, foundX]);
+    } else {
+        moveTo(lastInToVisit());
+        visited.push(lastInToVisit());
+        toVisit.pop();
+        table(maze);
+        recursiveMove();
+    }
 }
