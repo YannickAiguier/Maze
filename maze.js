@@ -48,7 +48,7 @@ Papa.parse(mazeMap, {
 // création du labyrinthe initial du sujet du Campus
 //createMaze();
 
-recursive2
+
 analyzeBox(x, y);
 table(maze);
 
@@ -107,7 +107,7 @@ function analyzeBox(y, x) {
             analyzeBox(y + 1, x);
             analyzeBox(y, x + 1);
             analyzeBox(y - 1, x);
-r
+
         }
     }
 }
