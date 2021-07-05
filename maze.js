@@ -29,6 +29,9 @@ let toVisit = new Array();
 // le nombre détapes pour trouver la sortie
 let step = 0;
 
+// le tableau du chemin réel
+let myPath = new Array();
+
 //
 // Début du programme principal
 //
@@ -45,15 +48,13 @@ Papa.parse(mazeMap, {
 // création du labyrinthe initial du sujet du Campus
 //createMaze();
 
-// début du parcours : départ de la case [y, x], on l'ajoute à visited
-visited.push([y, x]);
+recursive2
+analyzeBox(x, y);
+table(maze);
 
-// mode récursif
-recursiveMove();
-step++;
-console.log("Trouvé G en " + foundY + ", " + foundX);
 showPath();
 console.log("Nombre d'étapes pour trouver la sortie :" + step);
+realPath();
 
 //
 // Fin du programme principal
@@ -92,8 +93,21 @@ function analyzeBox(y, x) {
             foundExit = true;
             foundX = x;
             foundY = y;
-        } else if (boxIsNotWall(y, x) && hasNotBeenVisited(y, x)) {
-            toVisit.unshift([y, x]);
+            step++;
+            maze[y][x] = step;
+            visited.push([foundY, foundX]);
+            console.log("Trouvé G en " + foundY + ", " + foundX);
+            return;
+        } else if (boxIsNotWall(y, x) && hasNotBeenVisited(y, x) && !foundExit) {
+            step++;
+            maze[y][x] = step;
+            visited.push([y, x]);
+            table(maze);
+            analyzeBox(y, x - 1);
+            analyzeBox(y + 1, x);
+            analyzeBox(y, x + 1);
+            analyzeBox(y - 1, x);
+r
         }
     }
 }
@@ -201,30 +215,56 @@ function createMaze() {
 function showPath() {
     let str = "";
     for (let i = 0; i < visited.length; i++) {
-        str += ((i+1) + "(" + visited[i] +"), ");
+        str += ((i + 1) + "(" + visited[i] + "), ");
     }
     console.log(str);
 }
 
-/**
- * fonction récursive d'analyse d'une case
- */
-function recursiveMove() {
-    step++;
-    maze[y][x] = step;
 
-    analyzeBox(y - 1, x);
-    analyzeBox(y, x + 1);
-    analyzeBox(y + 1, x);
-    analyzeBox(y, x - 1);
-    if (foundExit) {
-        table(maze);
-        visited.push([foundY, foundX]);
-    } else {
-        moveTo(lastInToVisit());
-        visited.push(lastInToVisit());
-        toVisit.pop();
-        table(maze);
-        recursiveMove();
+function realPath() {
+    // parcourir le tableau en suivant les numéros d'étapes,
+    // pour chaque case analyser les cases adjacentes et trouver celle qui a le numéro le plus élevé, c'est la suivante.
+    // Ajouter cette case au tableau du chemin réel
+    findGreater(0, 0);
+    // afficher cette suite de coordonnées
+    console.log("Chemin du départ à la destination : ");
+    table(myPath);
+}
+
+function findGreater(y, x) {
+    let greaterY = y;
+    let greaterX = x;
+    if (y == foundY && x == foundX) {
+        return;
     }
+    if (boxInMaze(y, x)) {
+        let greater = maze[y][x];
+        if (boxInMaze(y, x - 1) && isGreater(y, x - 1, y, x)) {
+            greaterY = y;
+            greaterX = x - 1;
+            greater = maze[y][x-1];
+        }
+        if (boxInMaze(y + 1, x) && maze[y + 1][x] > greater) {
+            greaterY = y + 1;
+            greaterX = x;
+            greater = maze[y + 1][x]
+        }
+        if (boxInMaze(y, x + 1) && maze[y][x+1] > greater) {
+            greaterY = y;
+            greaterX = x + 1;
+            greater = maze[y][x+1];
+        }
+        if (boxInMaze(y - 1, x) && maze[y-1][x] > greater) {
+            greaterY = y - 1;
+            greaterX = x;
+            greater = maze[y-1][x];
+        }
+        myPath.push([greaterY, greaterX]);
+    }
+    findGreater(greaterY, greaterX);
+}
+
+function isGreater(y1, x1, y2, x2) {
+    return maze[y1][x1] > maze[y2][x2];
+
 }
