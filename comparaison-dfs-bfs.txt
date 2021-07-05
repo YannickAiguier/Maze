@@ -1,0 +1,4 @@
+L'algorithme BFS est plus long car il explore toutes les intersections les unes après les autres,
+mais au final on pourra connaitre le chemin le plus court à chaque fois.
+L'algorithme DFS est plus rapide dans ce cas là,
+mais il ne trouve qu'un chemin et ce n'est pas forcément le plus court (dépend de l'ordre d'analyse des cases).

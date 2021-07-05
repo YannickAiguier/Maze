@@ -48,8 +48,10 @@ Papa.parse(mazeMap, {
 // création du labyrinthe initial du sujet du Campus
 //createMaze();
 
+recursive2
 analyzeBox(x, y);
 table(maze);
+
 showPath();
 console.log("Nombre d'étapes pour trouver la sortie :" + step);
 realPath();
@@ -105,6 +107,7 @@ function analyzeBox(y, x) {
             analyzeBox(y + 1, x);
             analyzeBox(y, x + 1);
             analyzeBox(y - 1, x);
+r
         }
     }
 }
@@ -154,7 +157,7 @@ function boxIsNotWall(y, x) {
 }
 
 /**
- * fonction qui détermine si la case y,x n'a pas été visitée (n'est pas dasn le tableau visited)
+ * fonction qui détermine si la case y,x n'a pas été visitée (n'est pas dans le tableau visited)
  * 
  * @param {int} y 
  * @param {int} x 
@@ -217,6 +220,7 @@ function showPath() {
     console.log(str);
 }
 
+
 function realPath() {
     // parcourir le tableau en suivant les numéros d'étapes,
     // pour chaque case analyser les cases adjacentes et trouver celle qui a le numéro le plus élevé, c'est la suivante.
@@ -262,4 +266,5 @@ function findGreater(y, x) {
 
 function isGreater(y1, x1, y2, x2) {
     return maze[y1][x1] > maze[y2][x2];
+
 }
