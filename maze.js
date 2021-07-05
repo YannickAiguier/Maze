@@ -46,6 +46,7 @@ Papa.parse(mazeMap, {
 
 // début du parcours : départ de la case [y, x], on l'ajoute à visited
 visited.push([y, x]);
+showMazePosition();
 
 while (!foundExit) {
     step++;
