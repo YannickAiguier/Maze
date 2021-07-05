@@ -45,31 +45,7 @@ Papa.parse(mazeMap, {
 // création du labyrinthe initial du sujet du Campus
 //createMaze();
 
-// début du parcours : départ de la case [y, x], on l'ajoute à visited
-visited.push([y, x]);
-
-while (!foundExit) {
-    step++;
-    maze[y][x] = step;
-
-    analyzeBox(y - 1, x);
-    analyzeBox(y, x + 1);
-    analyzeBox(y + 1, x);
-    analyzeBox(y, x - 1);
-
-    if (foundExit) {
-        visited.push([foundY, foundX]);
-        //moveTo([foundY, foundX]);
-
-    } else {
-        moveTo(lastInToVisit());
-        visited.push(lastInToVisit());
-        toVisit.pop();
-    }
-    table(maze);
-}
-step++;
-console.log("Trouvé G en " + foundY + ", " + foundX);
+analyzeBox(x, y);
 showPath();
 console.log("Nombre d'étapes pour trouver la sortie :" + step);
 
@@ -110,8 +86,18 @@ function analyzeBox(y, x) {
             foundExit = true;
             foundX = x;
             foundY = y;
-        } else if (boxIsNotWall(y, x) && hasNotBeenVisited(y, x)) {
-            toVisit.push([y, x]);
+            visited.push([foundY, foundX]);
+            console.log("Trouvé G en " + foundY + ", " + foundX);
+            return;
+        } else if (boxIsNotWall(y, x) && hasNotBeenVisited(y, x) && !foundExit) {
+            step++;
+            maze[y][x] = step;
+            visited.push([y, x]);
+            table(maze);
+            analyzeBox(y, x - 1);
+            analyzeBox(y + 1, x);
+            analyzeBox(y, x + 1);
+            analyzeBox(y - 1, x);
         }
     }
 }
@@ -219,7 +205,7 @@ function createMaze() {
 function showPath() {
     let str = "";
     for (let i = 0; i < visited.length; i++) {
-        str += ((i+1) + "(" + visited[i] +"), ");
+        str += ((i + 1) + "(" + visited[i] + "), ");
     }
     console.log(str);
 }
