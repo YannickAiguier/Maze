@@ -1,4 +1,5 @@
 // pour lire un fichier
+import { table } from 'console';
 import { readFileSync } from 'fs';
 
 // pour utiliser papaparse (parse fichier csv)
@@ -46,10 +47,10 @@ Papa.parse(mazeMap, {
 
 // début du parcours : départ de la case [y, x], on l'ajoute à visited
 visited.push([y, x]);
-showMazePosition();
 
 while (!foundExit) {
     step++;
+    maze[y][x] = step;
 
     analyzeBox(y - 1, x);
     analyzeBox(y, x + 1);
@@ -65,7 +66,7 @@ while (!foundExit) {
         visited.push(lastInToVisit());
         toVisit.pop();
     }
-    showMazePosition();
+    table(maze);
 }
 step++;
 console.log("Trouvé G en " + foundY + ", " + foundX);
@@ -210,50 +211,6 @@ function createMaze() {
     maze[5][5] = 'M';
     maze[1][6] = 'M';
     maze[exitY][exitX] = 'G';
-}
-
-/**
- * fonction d'affichage du labyrinthe avec vision de la position du personnage
- */
-function showMazePosition() {
-
-    showMazeFirstOrLastLine();
-    showMazeLines();
-    showMazeFirstOrLastLine();
-
-    function showMazeFirstOrLastLine() {
-        let str = "";
-        for (let i = 0; i < mazex + 2; i++) {
-            str += "-";
-        }
-        console.log(str);
-    }
-
-    function showMazeLines() {
-        let str = "";
-        for (let i = 0; i < mazey; i++) {
-            str = "|";
-            for (let j = 0; j < mazex; j++) {
-                //str += maze[i][j];
-                str += whatToShow(i, j);
-            }
-            str += "|";
-            console.log(str);
-        }
-    }
-
-    function whatToShow(i, j) {
-        if (maze[i][j] == "G" && foundExit) {
-            return "G";
-        }
-        if (i == y && j == x) {
-            return "O";
-        } else if (maze[i][j] == "M") {
-            return "M";
-        } else {
-            return " ";
-        }
-    }
 }
 
 /**
