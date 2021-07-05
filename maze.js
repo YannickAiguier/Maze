@@ -49,6 +49,7 @@ visited.push([y, x]);
 
 while (!foundExit) {
     step++;
+    showMazePosition();
 
     analyzeBox(y - 1, x);
     analyzeBox(y, x + 1);
@@ -80,8 +81,8 @@ console.log("Nombre d'étapes pour trouver la sortie :" + step);
  */
 function createMazeFromCsv(results) {
     let csv = results["data"];
-    mazex = csv[0][0];
-    mazey = csv[0][1];
+    mazex = parseInt(csv[0][0]);
+    mazey = parseInt(csv[0][1]);
     if (csv[0][2] != "") {
         x = csv[0][2];
         y = csv[0][3];
@@ -207,4 +208,34 @@ function hasNotBeenVisited(y, x) {
     maze[5][5] = 'M';
     maze[1][6] = 'M';
     maze[exitY][exitX] = 'G';
+}
+
+/**
+ * fonction d'affichage du labyrinthe avec vision de la position du personnage
+ */
+function showMazePosition() {
+
+    showMazeFirstOrLastLine();
+    showMazeLines();
+    showMazeFirstOrLastLine();
+
+    function showMazeFirstOrLastLine() {
+        let str = "";        
+        for (let i = 0; i < mazex + 2; i++) {
+            str += "-";
+        }
+        console.log(str);
+    }
+
+    function showMazeLines() {
+        let str = "";
+        for (let i = 0; i < mazey; i++) {
+            str = "|";
+            for (let j = 0; j < mazex; j++) {
+                str += maze[i][j];
+            }
+            str += "|";
+            console.log(str);
+        }
+    }
 }
