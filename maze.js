@@ -143,7 +143,7 @@ function boxIsNotWall(y, x) {
 }
 
 /**
- * fonction qui détermine si la case y,x n'a pas été visitée (n'est pas dasn le tableau visited)
+ * fonction qui détermine si la case y,x n'a pas été visitée (n'est pas dans le tableau visited)
  * 
  * @param {int} y 
  * @param {int} x 
@@ -206,6 +206,9 @@ function showPath() {
     console.log(str);
 }
 
+/**
+ * fonction récursive d'analyse d'une case
+ */
 function recursiveMove() {
     step++;
     maze[y][x] = step;
