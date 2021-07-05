@@ -93,7 +93,7 @@ function analyzeBox(y, x) {
             foundX = x;
             foundY = y;
         } else if (boxIsNotWall(y, x) && hasNotBeenVisited(y, x)) {
-            toVisit.push([y, x]);
+            toVisit.unshift([y, x]);
         }
     }
 }
