@@ -37,7 +37,7 @@ let step = 0;
 let mazeMap = readFileSync('maze.csv', 'utf8');
 Papa.parse(mazeMap, {
     delimiter: ",",
-    complete: function(results) {
+    complete: function (results) {
         createMazeFromCsv(results);
     }
 });
@@ -49,21 +49,22 @@ visited.push([y, x]);
 
 while (!foundExit) {
     step++;
-    showMazePosition();
 
     analyzeBox(y - 1, x);
     analyzeBox(y, x + 1);
     analyzeBox(y + 1, x);
     analyzeBox(y, x - 1);
-    
+
     if (foundExit) {
         visited.push([foundY, foundX]);
-        moveTo([foundY, foundX]);
+        //moveTo([foundY, foundX]);
+
     } else {
         moveTo(lastInToVisit());
         visited.push(lastInToVisit());
         toVisit.pop();
-    }    
+    }
+    showMazePosition();
 }
 step++;
 console.log("Trouvé G en " + foundY + ", " + foundX);
@@ -88,7 +89,7 @@ function createMazeFromCsv(results) {
         y = csv[0][3];
     }
     for (let i = 0; i < mazey; i++) {
-        maze[i] = csv[i+1];
+        maze[i] = csv[i + 1];
     }
 }
 
@@ -131,7 +132,7 @@ function moveTo([newY, newX]) {
  * @param {int} x 
  * @returns boolean
  */
- function boxInMaze(y, x) {
+function boxInMaze(y, x) {
     return (y >= 0 && y < mazey && x >= 0 && x < mazex);
 }
 
@@ -142,7 +143,7 @@ function moveTo([newY, newX]) {
  * @param {int} x 
  * @returns boolean
  */
- function boxIsG(y, x) {
+function boxIsG(y, x) {
     return maze[y][x] == 'G';
 }
 
@@ -153,7 +154,7 @@ function moveTo([newY, newX]) {
  * @param {int} x 
  * @returns boolean
  */
- function boxIsNotWall(y, x) {
+function boxIsNotWall(y, x) {
     return maze[y][x] != 'M';
 }
 
@@ -165,7 +166,7 @@ function moveTo([newY, newX]) {
  * @returns boolean
  */
 function hasNotBeenVisited(y, x) {
-    for(let i = 0; i < visited.length; i++) {
+    for (let i = 0; i < visited.length; i++) {
         if (visited[i][0] == y && visited[i][1] == x) {
             return false;
         }
@@ -178,14 +179,14 @@ function hasNotBeenVisited(y, x) {
  * 
  * @returns array[y, x]
  */
- function lastInToVisit() {
+function lastInToVisit() {
     return toVisit[toVisit.length - 1];
 }
 
 /**
  * fonction qui crée la labyrinthe
  */
- function createMaze() {
+function createMaze() {
     maze = new Array(mazey);
 
     // construction du tableau labyrinthe
@@ -220,7 +221,7 @@ function showMazePosition() {
     showMazeFirstOrLastLine();
 
     function showMazeFirstOrLastLine() {
-        let str = "";        
+        let str = "";
         for (let i = 0; i < mazex + 2; i++) {
             str += "-";
         }
@@ -232,10 +233,24 @@ function showMazePosition() {
         for (let i = 0; i < mazey; i++) {
             str = "|";
             for (let j = 0; j < mazex; j++) {
-                str += maze[i][j];
+                //str += maze[i][j];
+                str += whatToShow(i, j);
             }
             str += "|";
             console.log(str);
+        }
+    }
+
+    function whatToShow(i, j) {
+        if (maze[i][j] == "G" && foundExit) {
+            return "G";
+        }
+        if (i == y && j == x) {
+            return "O";
+        } else if (maze[i][j] == "M") {
+            return "M";
+        } else {
+            return " ";
         }
     }
 }
