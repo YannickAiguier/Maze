@@ -69,7 +69,7 @@ while (!foundExit) {
 }
 step++;
 console.log("Trouvé G en " + foundY + ", " + foundX);
-console.log(visited);
+showPath();
 console.log("Nombre d'étapes pour trouver la sortie :" + step);
 
 //
@@ -254,4 +254,15 @@ function showMazePosition() {
             return " ";
         }
     }
+}
+
+/**
+ * fonction pour afficher le chemin d'exploration
+ */
+function showPath() {
+    let str = "";
+    for (let i = 0; i < visited.length; i++) {
+        str += ((i+1) + "(" + visited[i] +"), ");
+    }
+    console.log(str);
 }
