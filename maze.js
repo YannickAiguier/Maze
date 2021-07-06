@@ -29,7 +29,9 @@ let toVisit = new Array();
 // le nombre détapes pour trouver la sortie
 let step = 0;
 
+
 // le tableau pour mémoriser le plus court chemin vers la destination
+
 let myPath = new Array();
 
 //
@@ -48,13 +50,10 @@ Papa.parse(mazeMap, {
 // création du labyrinthe initial du sujet du Campus
 //createMaze();
 
-// début du parcours : départ de la case [y, x], on l'ajoute à visited
-visited.push([y, x]);
 
-// mode récursif
-recursiveMove();
-step++;
-console.log("Trouvé G en " + foundY + ", " + foundX);
+analyzeBox(x, y);
+table(maze);
+
 showPath();
 console.log("Nombre d'étapes pour trouver la sortie :" + step);
 realPath();
@@ -96,8 +95,21 @@ function analyzeBox(y, x) {
             foundExit = true;
             foundX = x;
             foundY = y;
-        } else if (boxIsNotWall(y, x) && hasNotBeenVisited(y, x)) {
-            toVisit.unshift([y, x]);
+            step++;
+            maze[y][x] = step;
+            visited.push([foundY, foundX]);
+            console.log("Trouvé G en " + foundY + ", " + foundX);
+            return;
+        } else if (boxIsNotWall(y, x) && hasNotBeenVisited(y, x) && !foundExit) {
+            step++;
+            maze[y][x] = step;
+            visited.push([y, x]);
+            table(maze);
+            analyzeBox(y, x - 1);
+            analyzeBox(y + 1, x);
+            analyzeBox(y, x + 1);
+            analyzeBox(y - 1, x);
+
         }
     }
 }
@@ -209,6 +221,7 @@ function showPath() {
     }
     console.log(str);
 }
+
 
 /**
  * fonction récursive d'analyse d'une case
