@@ -29,6 +29,9 @@ let toVisit = new Array();
 // le nombre détapes pour trouver la sortie
 let step = 0;
 
+// le tableau pour mémoriser le plus court chemin vers la destination
+let myPath = new Array();
+
 //
 // Début du programme principal
 //
@@ -54,6 +57,7 @@ step++;
 console.log("Trouvé G en " + foundY + ", " + foundX);
 showPath();
 console.log("Nombre d'étapes pour trouver la sortie :" + step);
+realPath();
 
 //
 // Fin du programme principal
@@ -201,7 +205,7 @@ function createMaze() {
 function showPath() {
     let str = "";
     for (let i = 0; i < visited.length; i++) {
-        str += ((i+1) + "(" + visited[i] +"), ");
+        str += ((i + 1) + "(" + visited[i] + "), ");
     }
     console.log(str);
 }
@@ -219,6 +223,7 @@ function recursiveMove() {
     analyzeBox(y, x - 1);
     if (foundExit) {
         table(maze);
+        maze[foundY][foundX] = step + 1;
         visited.push([foundY, foundX]);
     } else {
         moveTo(lastInToVisit());
@@ -227,4 +232,55 @@ function recursiveMove() {
         table(maze);
         recursiveMove();
     }
+}
+
+function realPath() {
+    // parcourir le tableau en partant de la destination
+    // pour chaque case analyser les cases adjacentes et trouver celle qui a le numéro le moins élevé, c'est la suivante.
+    // Ajouter cette case au tableau du chemin réel
+    findLesser(foundY, foundX);
+    // afficher cette suite de coordonnées
+    console.log("Chemin du départ à la destination : ");
+    table(myPath);
+}
+
+function findLesser(y, x) {
+    let lesserY = y;
+    let lesserX = x;
+    if (y == 0 && x == 0) {
+        return;
+    }
+    if (boxInMaze(y, x)) {
+        let lesser = maze[y][x];
+        if (isComparable(y, x - 1) && isLesser(y, x - 1, y, x)) {
+            lesserY = y;
+            lesserX = x - 1;
+            lesser = maze[y][x - 1];
+        }
+        if (isComparable(y + 1, x) && maze[y + 1][x] < lesser) {
+            lesserY = y + 1;
+            lesserX = x;
+            lesser = maze[y + 1][x]
+        }
+        if (isComparable(y, x + 1) && maze[y][x + 1] < lesser) {
+            lesserY = y;
+            lesserX = x + 1;
+            lesser = maze[y][x + 1];
+        }
+        if (isComparable(y - 1, x) && maze[y - 1][x] < lesser) {
+            lesserY = y - 1;
+            lesserX = x;
+            lesser = maze[y - 1][x];
+        }
+        myPath.unshift([lesserY, lesserX]);
+    }
+    findLesser(lesserY, lesserX);
+}
+
+function isLesser(y1, x1, y2, x2) {
+    return maze[y1][x1] < maze[y2][x2];
+}
+
+function isComparable(y, x) {
+    return (boxInMaze(y, x) && maze[y][x] != '' && !isNaN(maze[y][x]));
 }
