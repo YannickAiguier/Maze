@@ -1,9 +1,14 @@
-// pour lire un fichier
+// Largeur d'abord (BFS) : les possibilités des cases adjacentes sont stockées dans une FILE.
+// On va donc continuer par la première analysée => on explore dans le même sens que le test (enfile/défile)
+
+// pour utiliser table au lieu de console.table (créé automatiquement)
 import { table } from 'console';
+
+// pour lire un fichier
 import { readFileSync } from 'fs';
 
 // pour utiliser papaparse (parse fichier csv)
-import Papa from './node_modules/papaparse/papaparse.js';
+import Papa from 'papaparse';
 
 // les variables du labyrinthe : largeur, hauteur, tableau représentant le labyrinthe, coordonnées de la sortie
 let mazex = 7;
@@ -29,39 +34,92 @@ let toVisit = new Array();
 // le nombre détapes pour trouver la sortie
 let step = 0;
 
-// le tableau pour mémoriser le plus court chemin vers la destination
+// le tableau du chemin réel
 let myPath = new Array();
 
-//
-// Début du programme principal
-//
+
+///////////////////////////////////
+//                               //
+// Début du programme principal  //
+//                               //
+///////////////////////////////////
 
 // Commenter/décommenter le mode de création du labyrinthe voulu
+
 // création depuis le fichier maze.csv
-let mazeMap = readFileSync('maze.csv', 'utf8');
-Papa.parse(mazeMap, {
-    delimiter: ",",
-    complete: function (results) {
-        createMazeFromCsv(results);
-    }
-});
+// let mazeMap = readFileSync('maze.csv', 'utf8');
+// Papa.parse(mazeMap, {
+//     delimiter: ",",
+//     complete: function (results) {
+//         createMazeFromCsv(results);
+//     }
+// });
 // création du labyrinthe initial du sujet du Campus
-//createMaze();
+createMaze();
 
 // début du parcours : départ de la case [y, x], on l'ajoute à visited
 visited.push([y, x]);
 
 // mode récursif
-recursiveMove();
+while (!foundExit) {
+    step++;
+    maze[y][x] = step;
+
+    analyzeBox(y - 1, x);
+    analyzeBox(y, x + 1);
+    analyzeBox(y + 1, x);
+    analyzeBox(y, x - 1);
+    if (foundExit) {
+        table(maze);
+        maze[foundY][foundX] = step + 1;
+        visited.push([foundY, foundX]);
+    } else {
+        moveTo(firstInToVisit());
+        visited.push(firstInToVisit());
+        toVisit.shift();
+        table(maze);
+        //recursiveMove();
+    }
+}
 step++;
 console.log("Trouvé G en " + foundY + ", " + foundX);
-showPath();
+showExplorePath();
 console.log("Nombre d'étapes pour trouver la sortie :" + step);
-realPath();
+showRealPath();
 
-//
-// Fin du programme principal
-//
+///////////////////////////////////
+//                               //
+//  Fin du programme principal   //
+//                               //
+///////////////////////////////////
+
+/**
+ * fonction qui crée le labyrinthe du sujet du Campus
+ */
+ function createMaze() {
+    maze = new Array(mazey);
+
+    // construction du tableau labyrinthe
+    for (let i = 0; i < mazey; i++) {
+        maze[i] = new Array(mazex);
+    }
+
+    // positionnement des murs et de la sortie
+    maze[0][1] = 'M';
+    maze[1][1] = 'M';
+    maze[2][1] = 'M';
+    maze[4][1] = 'M';
+    maze[5][1] = 'M';
+    maze[1][3] = 'M';
+    maze[2][3] = 'M';
+    maze[4][3] = 'M';
+    maze[1][4] = 'M';
+    maze[3][4] = 'M';
+    maze[3][5] = 'M';
+    maze[5][5] = 'M';
+    maze[1][6] = 'M';
+    maze[exitY][exitX] = 'G';
+}
 
 /**
  * fonction qui crée le tableau maze représentant le labyrinthe à partir du json créé par papaparse
@@ -97,7 +155,7 @@ function analyzeBox(y, x) {
             foundX = x;
             foundY = y;
         } else if (boxIsNotWall(y, x) && hasNotBeenVisited(y, x)) {
-            toVisit.unshift([y, x]);
+            toVisit.push([y, x]);
         }
     }
 }
@@ -120,12 +178,12 @@ function moveTo([newY, newX]) {
  * @param {int} x 
  * @returns boolean
  */
-function boxInMaze(y, x) {
+ function boxInMaze(y, x) {
     return (y >= 0 && y < mazey && x >= 0 && x < mazex);
 }
 
 /**
- * fontion qui détermine si une case y,x contient la sortie (=='G')
+ * fontion qui détermine si une case y,x est la destination (=='G')
  * 
  * @param {int} y 
  * @param {int} x 
@@ -163,46 +221,18 @@ function hasNotBeenVisited(y, x) {
 }
 
 /**
- * fonction qui renvoie les coordonnées de la dernière case de la liste des cases à visiter
+ * fonction qui renvoie les coordonnées de la première case de la liste des cases à visiter
  * 
  * @returns array[y, x]
  */
-function lastInToVisit() {
-    return toVisit[toVisit.length - 1];
-}
-
-/**
- * fonction qui crée la labyrinthe
- */
-function createMaze() {
-    maze = new Array(mazey);
-
-    // construction du tableau labyrinthe
-    for (let i = 0; i < mazey; i++) {
-        maze[i] = new Array(mazex);
-    }
-
-    // positionnement des murs et de la sortie
-    maze[0][1] = 'M';
-    maze[1][1] = 'M';
-    maze[2][1] = 'M';
-    maze[4][1] = 'M';
-    maze[5][1] = 'M';
-    maze[1][3] = 'M';
-    maze[2][3] = 'M';
-    maze[4][3] = 'M';
-    maze[1][4] = 'M';
-    maze[3][4] = 'M';
-    maze[3][5] = 'M';
-    maze[5][5] = 'M';
-    maze[1][6] = 'M';
-    maze[exitY][exitX] = 'G';
+function firstInToVisit() {
+    return toVisit[0];
 }
 
 /**
  * fonction pour afficher le chemin d'exploration
  */
-function showPath() {
+function showExplorePath() {
     let str = "";
     for (let i = 0; i < visited.length; i++) {
         str += ((i + 1) + "(" + visited[i] + "), ");
@@ -210,31 +240,7 @@ function showPath() {
     console.log(str);
 }
 
-/**
- * fonction récursive d'analyse d'une case
- */
-function recursiveMove() {
-    step++;
-    maze[y][x] = step;
-
-    analyzeBox(y - 1, x);
-    analyzeBox(y, x + 1);
-    analyzeBox(y + 1, x);
-    analyzeBox(y, x - 1);
-    if (foundExit) {
-        table(maze);
-        maze[foundY][foundX] = step + 1;
-        visited.push([foundY, foundX]);
-    } else {
-        moveTo(lastInToVisit());
-        visited.push(lastInToVisit());
-        toVisit.pop();
-        table(maze);
-        recursiveMove();
-    }
-}
-
-function realPath() {
+function showRealPath() {
     // parcourir le tableau en partant de la destination
     // pour chaque case analyser les cases adjacentes et trouver celle qui a le numéro le moins élevé, c'est la suivante.
     // Ajouter cette case au tableau du chemin réel
@@ -244,6 +250,14 @@ function realPath() {
     table(myPath);
 }
 
+/**
+ * fonction qui trouve le numéro le moins élevé dans les case adjacentes à la case de coordonnées x, y
+ * les coordonnées de cette case sont ajoutées au chemin réel, et on continue de manière récursive en appelant la fonction
+ * avec ces nouvelles coordonnées. Jusqu'à avoir les coordonnées de la destination.
+ * 
+ * @param {int} y 
+ * @param {int} x 
+ */
 function findLesser(y, x) {
     let lesserY = y;
     let lesserX = x;
@@ -277,6 +291,15 @@ function findLesser(y, x) {
     findLesser(lesserY, lesserX);
 }
 
+/**
+ * fonction qui teste si le contenu de la case(x1, y1) est inférieur à celui de la case(x2, y2)
+ * 
+ * @param {int} y1 
+ * @param {int} x1 
+ * @param {int} y2 
+ * @param {int} x2 
+ * @returns boolean
+ */
 function isLesser(y1, x1, y2, x2) {
     return maze[y1][x1] < maze[y2][x2];
 }
