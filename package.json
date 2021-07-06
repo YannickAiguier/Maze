@@ -2,7 +2,7 @@
   "name": "maze",
   "version": "1.0.0",
   "description": "",
-  "main": "maze.js",
+  "main": "dfs.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
