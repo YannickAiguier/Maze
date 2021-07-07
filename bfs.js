@@ -96,7 +96,7 @@ showRealPath();
 /**
  * fonction qui crée le labyrinthe du sujet du Campus
  */
- function createMaze() {
+function createMaze() {
     maze = new Array(mazey);
 
     // construction du tableau labyrinthe
@@ -178,7 +178,7 @@ function moveTo([newY, newX]) {
  * @param {int} x 
  * @returns boolean
  */
- function boxInMaze(y, x) {
+function boxInMaze(y, x) {
     return (y >= 0 && y < mazey && x >= 0 && x < mazex);
 }
 
