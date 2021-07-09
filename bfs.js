@@ -1,21 +1,16 @@
+// besoin de generator
+//const Generator = require("./generator");
+import * as Generator from './generator.js';
+
 // Largeur d'abord (BFS) : les possibilités des cases adjacentes sont stockées dans une FILE.
 // On va donc continuer par la première analysée => on explore dans le même sens que le test (enfile/défile)
 
-// pour utiliser table au lieu de console.table (créé automatiquement)
-import { table } from 'console';
-
-// pour lire un fichier
-import { readFileSync } from 'fs';
-
-// pour utiliser papaparse (parse fichier csv)
-import Papa from 'papaparse';
-
 // les variables du labyrinthe : largeur, hauteur, tableau représentant le labyrinthe, coordonnées de la sortie
-let mazex = 7;
-let mazey = 6;
+//let mazex = 7;
+//let mazey = 6;
 let maze = new Array();
-let exitY = 2;
-let exitX = 4;
+//let exitY = 2;
+//let exitX = 4;
 
 // les variables du programme
 // la position du personnage
@@ -54,8 +49,16 @@ let myPath = new Array();
 //         createMazeFromCsv(results);
 //     }
 // });
+//
 // création du labyrinthe initial du sujet du Campus
-createMaze();
+// let exitY = 2;
+// let exitX = 4;
+// createMaze();
+//
+// création du labyrinthe par mon générateur
+maze = Generator.generateMaze();
+let mazex = maze[0].length;
+let mazey = maze.length;
 
 // début du parcours : départ de la case [y, x], on l'ajoute à visited
 visited.push([y, x]);
@@ -74,6 +77,7 @@ while (!foundExit) {
         maze[foundY][foundX] = step + 1;
         visited.push([foundY, foundX]);
     } else {
+        console.log(firstInToVisit());
         moveTo(firstInToVisit());
         visited.push(firstInToVisit());
         toVisit.shift();
@@ -155,6 +159,7 @@ function analyzeBox(y, x) {
             foundX = x;
             foundY = y;
         } else if (boxIsNotWall(y, x) && hasNotBeenVisited(y, x)) {
+            console.log("x, y : " + x + ", " + y);
             toVisit.push([y, x]);
         }
     }

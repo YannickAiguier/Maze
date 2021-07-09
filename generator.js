@@ -1,13 +1,15 @@
 // besoin de la classe Maze
-const Maze = require('./maze');
+//const Maze = require('./maze');
+import {Maze} from './maze.js';
 
 // variables du programme
 // taille du labyrinthe
 const mazeWidth = 18;
 const mazeHeight = 26;
 
-// le labyrinthe
+// les labyrinthes
 let myMaze = new Maze(mazeHeight, mazeWidth);
+let finalMaze = new Array(mazeHeight * 2 - 1);
 
 // coordonnées de départ
 let x = 5;
@@ -23,7 +25,7 @@ let path = new Set();
 // console.log("myMaze :");
 // console.log(myMaze);
 
-
+generateMaze();
 
 ////////////////////////
 //                    //
@@ -31,26 +33,31 @@ let path = new Set();
 //                    //
 ////////////////////////
 
-// création du labyrinthe "exploitable", on le remplit de murs ('M')
-let finalMaze = new Array(mazeHeight * 2 - 1);
-for (let i = 0; i < mazeHeight * 2 - 1; i++) {
-    finalMaze[i] = new Array(mazeWidth * 2 - 1);
-    for (let j = 0; j < mazeWidth * 2 - 1; j++) {
-        finalMaze[i][j] = 'M';
+function generateMaze() {
+
+    // création du labyrinthe "exploitable", on le remplit de murs ('M')
+
+    for (let i = 0; i < mazeHeight * 2 - 1; i++) {
+        finalMaze[i] = new Array(mazeWidth * 2 - 1);
+        for (let j = 0; j < mazeWidth * 2 - 1; j++) {
+            finalMaze[i][j] = 'M';
+        }
     }
+    console.table(finalMaze);
+    
+    // creuser la case de départ
+    finalMaze[newCoord(x)][newCoord(y)] = 'S';
+    console.table(finalMaze);
+    
+    // générer le labyrinthe
+    generateBox([x, y]);
+    
+    // Marquer la destination
+    finalMaze[newCoord(endx)][newCoord(endy)] = 'G';
+    console.table(finalMaze);
+
+    return finalMaze;
 }
-console.table(finalMaze);
-
-// creuser la case de départ
-finalMaze[newCoord(x)][newCoord(y)] = 'S';
-console.table(finalMaze);
-
-// générer le labyrinthe
-generateBox([x, y]);
-
-// Marquer la destination
-finalMaze[newCoord(endx)][newCoord(endy)] = 'G';
-console.table(finalMaze);
 
 ////////////////////////
 //                    //
@@ -114,3 +121,5 @@ function showFinalMaze() {
     // 
     // afficher ligne horizontale de la largeur + 2
 }
+
+export {generateMaze};

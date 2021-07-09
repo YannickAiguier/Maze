@@ -1,4 +1,4 @@
-class Box {
+export class Box {
     constructor(x, y, mazeWidth, mazeHeight) {
         this.x = x;
         this.y = y;
@@ -40,5 +40,3 @@ class Box {
         this.possibleNeighbors.length = 0;
     }
 }
-
-module.exports = Box;

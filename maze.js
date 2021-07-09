@@ -1,6 +1,7 @@
-const Box = require("./box");
+//const Box = require("./box");
+import {Box} from './box.js';
 
-class Maze {
+export class Maze {
     constructor(mazeWidth, mazeHeight) {
         this.mazeWidth = mazeWidth;
         this.mazeHeight = mazeHeight;
@@ -71,5 +72,3 @@ class Maze {
 
     }
 }
-
-module.exports = Maze;
