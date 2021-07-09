@@ -14,8 +14,13 @@ let maze = new Array();
 
 // les variables du programme
 // la position du personnage
-let x = 0;
-let y = 0;
+let x = 5;
+let y = 5;
+let endx = 3;
+let endy = 3;
+// taille du labyrinthe
+const mazeWidth = 18;
+const mazeHeight = 26;
 
 // savoir si la case de sortie a été trouvée, et sa position
 let foundExit = false;
@@ -56,40 +61,45 @@ let myPath = new Array();
 // createMaze();
 //
 // création du labyrinthe par mon générateur
-maze = Generator.generateMaze();
+maze = Generator.generateMaze(x, y, endx, endy, mazeWidth, mazeHeight);
 let mazex = maze[0].length;
 let mazey = maze.length;
 
 // début du parcours : départ de la case [y, x], on l'ajoute à visited
 visited.push([y, x]);
 
-// mode récursif
+x = 2*x;
+y = 2*y;
+
+// mode récursif;
 while (!foundExit) {
     step++;
     maze[y][x] = step;
+    console.table(maze);
 
     analyzeBox(y - 1, x);
     analyzeBox(y, x + 1);
     analyzeBox(y + 1, x);
     analyzeBox(y, x - 1);
     if (foundExit) {
-        table(maze);
+        console.table(maze);
         maze[foundY][foundX] = step + 1;
         visited.push([foundY, foundX]);
     } else {
-        console.log(firstInToVisit());
+        //console.log(firstInToVisit());
         moveTo(firstInToVisit());
         visited.push(firstInToVisit());
         toVisit.shift();
-        table(maze);
+        //console.table(maze);
         //recursiveMove();
     }
 }
+console.table(maze);
 step++;
 console.log("Trouvé G en " + foundY + ", " + foundX);
 showExplorePath();
-console.log("Nombre d'étapes pour trouver la sortie :" + step);
-showRealPath();
+// console.log("Nombre d'étapes pour trouver la sortie :" + step);
+// showRealPath();
 
 ///////////////////////////////////
 //                               //
@@ -252,7 +262,7 @@ function showRealPath() {
     findLesser(foundY, foundX);
     // afficher cette suite de coordonnées
     console.log("Chemin du départ à la destination : ");
-    table(myPath);
+    console.table(myPath);
 }
 
 /**

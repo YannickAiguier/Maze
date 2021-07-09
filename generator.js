@@ -4,20 +4,20 @@ import {Maze} from './maze.js';
 
 // variables du programme
 // taille du labyrinthe
-const mazeWidth = 18;
-const mazeHeight = 26;
+//const mazeWidth = 18;
+//const mazeHeight = 26;
 
 // les labyrinthes
-let myMaze = new Maze(mazeHeight, mazeWidth);
-let finalMaze = new Array(mazeHeight * 2 - 1);
+let myMaze = new Array();
+let finalMaze = new Array();
 
 // coordonnées de départ
-let x = 5;
-let y = 5;
+//let x = 5;
+//let y = 5;
 
 // coordonnées de la destination, qui seront fixées à la fin
-let endx = 3;
-let endy = 3;
+//let endx = 3;
+//let endy = 3;
 
 // liste qui contiendra la suite de déplacements pour créer le labyrinthe
 let path = new Set();
@@ -25,7 +25,7 @@ let path = new Set();
 // console.log("myMaze :");
 // console.log(myMaze);
 
-generateMaze();
+//generateMaze();
 
 ////////////////////////
 //                    //
@@ -33,10 +33,12 @@ generateMaze();
 //                    //
 ////////////////////////
 
-function generateMaze() {
+function generateMaze(x, y, endx, endy, mazeWidth, mazeHeight) {
+
+    myMaze = new Maze(mazeHeight, mazeWidth);
+    finalMaze = new Array(mazeHeight * 2 - 1)
 
     // création du labyrinthe "exploitable", on le remplit de murs ('M')
-
     for (let i = 0; i < mazeHeight * 2 - 1; i++) {
         finalMaze[i] = new Array(mazeWidth * 2 - 1);
         for (let j = 0; j < mazeWidth * 2 - 1; j++) {
@@ -67,7 +69,8 @@ function generateMaze() {
 
 
 
-function generateBox([x, y]) {
+function generateBox([x, y],) {
+
     // ajout de la case courante à la liste des cases visitées
     myMaze.setVisited([x, y]);
     // établir la liste des cases voisines disponibles
